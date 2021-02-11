@@ -1,0 +1,14 @@
+{
+    "dr-checkoff-za": {
+        "corsOrigin": "*",
+        "region": {
+            "region": "af-south-1",
+            "account": "XXXXXXXXXXXX"
+        },
+        "jwt": {
+            "secret": "<run 'node generateJwtSecret.js' from the project root folder>",
+            "authTokenExpiration": "30m",
+            "refreshTokenExpiration": "30d"
+        }
+    }
+}

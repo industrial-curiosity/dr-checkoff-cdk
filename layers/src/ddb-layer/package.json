@@ -1,0 +1,12 @@
+{
+  "name": "ddb-layer",
+  "version": "1.0.0",
+  "description": "a layer for dynamodb table interfaces",
+  "main": "index.js",
+  "scripts": {
+    "package-upgrade": "npx npm-check-updates -u"
+  },
+  "dependencies": {
+    "uuid": "^8.3.0"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "name": "dr-checkoff-cdk",
+  "description": "A TypeScript CDK project for Dr Checkoff cloud infrastructure",
+  "version": "0.1.0",
+  "bin": {
+    "dr-checkoff-cdk": "bin/dr-checkoff-cdk.js"
+  },
+  "scripts": {
+    "lint": "eslint . --ignore-path .gitignore",
+    "build": "npm run lint && node build-layers && tsc",
+    "build-no-layers": "npm run lint && tsc",
+    "watch": "tsc -w",
+    "test-units": "jest",
+    "cdk": "cdk",
+    "synth": "npm run build && echo 'performing cdk synthesis...' && cdk synth",
+    "synth-no-layers": "npm run build-no-layers && echo 'performing cdk synthesis...' && cdk synth",
+    "package-upgrade": "npx npm-check-updates -u && npm -g upgrade cdk"
+  },
+  "dependencies": {
+    "@aws-cdk/assert": "1.89.0",
+    "@aws-cdk/aws-apigateway": "^1.89.0",
+    "@aws-cdk/aws-dynamodb": "^1.89.0",
+    "@aws-cdk/aws-events-targets": "^1.89.0",
+    "@aws-cdk/core": "1.89.0",
+    "@types/jest": "^26.0.10",
+    "@types/node": "10.17.27",
+    "aws-cdk": "1.89.0",
+    "eslint": "^7.19.0",
+    "fs-extra": "^9.1.0",
+    "jest": "^26.4.2",
+    "source-map-support": "^0.5.16",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "~3.9.7"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/industrial-curiosity/dr-checkoff-cdk.git"
+  },
+  "author": "industrial-curiosity",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/industrial-curiosity/dr-checkoff-cdk/issues"
+  },
+  "homepage": "https://github.com/industrial-curiosity/dr-checkoff-cdk#readme"
+}
