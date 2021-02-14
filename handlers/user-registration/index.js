@@ -60,7 +60,7 @@ exports.register = async (event) => {
                     sendOTP({
                         userId: result.userId,
                         email: payload.email,
-                        confirmationUrl: `${process.env.CLIENT_HOST}}/${result.userId}/confirm`
+                        confirmationUrl: `${process.env.CLIENT_HOST}/${result.userId}/confirm`
                     })
                     .then(() => {
                         resolve(utils.createResponse({
