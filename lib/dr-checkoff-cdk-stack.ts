@@ -82,6 +82,15 @@ export class DrCheckoffCdkStack extends cdk.Stack {
             description: 'a layer for providing utility functions',
         });
 
+        // otp layer
+        const otpLayer = new LayerVersion(stack, 'otp-layer', {
+            // Code.fromAsset must reference the build folder
+            code: Code.fromAsset('./layers/build/otp-layer'),
+            compatibleRuntimes: [Runtime.NODEJS_12_X],
+            license: 'MIT',
+            description: 'a layer for providing otp functions',
+        });
+
         // ddb layer
         const ddbLayer = new LayerVersion(stack, 'ddb-layer', {
             // Code.fromAsset must reference the build folder
@@ -95,12 +104,19 @@ export class DrCheckoffCdkStack extends cdk.Stack {
             USERS_TABLE_NAME: usersTable.tableName,
             USER_LOOKUP_TABLE_NAME: userLookupTable.tableName,
             REFRESH_TOKENS_TABLE_NAME: refreshTokenTable.tableName,
+            OTP_TABLE_NAME: otpTable.tableName,
         };
 
         let jwtEnvironment = {
             JWT_SECRET: customOptions.jwt.secret,
             JWT_EXPIRATION: customOptions.jwt.authTokenExpiration,
             JWT_REFRESH_EXPIRATION: customOptions.jwt.refreshTokenExpiration,
+        }
+
+        let mailgunEnvironment = {
+            MAILGUN_DOMAIN: customOptions.mailgun.domain,
+            MAILGUN_FROM: customOptions.mailgun.from,
+            MAILGUN_API_KEY: customOptions.mailgun.api_key
         }
 
         const restApi = new RestApi(stack, `dr-checkoff-cdk-api`, {
@@ -117,6 +133,7 @@ export class DrCheckoffCdkStack extends cdk.Stack {
 
         // /register
         api.register = api.root.addResource('register');
+        api.registerConfirm = api.register.addResource('confirm');
 
         let registrationFunctions = [
             {
@@ -126,14 +143,34 @@ export class DrCheckoffCdkStack extends cdk.Stack {
                 method: 'POST',
                 resource: api.register,
                 environment: {
-                ...corsEnvironment,
-                ...authenticationEnvironment
+                    ...corsEnvironment,
+                    ...authenticationEnvironment,
+                    ...mailgunEnvironment,
+                    CLIENT_HOST: customOptions.clientUrl
                 },
                 ddbAccess: [
-                    { table: usersTable, access: DDB_ACCESS.WRITE },
-                    { table: userLookupTable, access: DDB_ACCESS.WRITE }
+                    { table: usersTable, access: DDB_ACCESS.FULL },
+                    { table: userLookupTable, access: DDB_ACCESS.FULL },
+                    { table: otpTable, access: DDB_ACCESS.WRITE }
                 ],
-                layers: [ddbLayer, utilityLayer],
+                layers: [ddbLayer, utilityLayer, otpLayer],
+            },
+            {
+                name: 'user-confirmation',
+                handler: 'index.confirm',
+                code: './handlers/user-registration',
+                method: 'POST',
+                resource: api.registerConfirm,
+                environment: {
+                    ...corsEnvironment,
+                    ...authenticationEnvironment,
+                    ...mailgunEnvironment
+                },
+                ddbAccess: [
+                    { table: usersTable, access: DDB_ACCESS.FULL },
+                    { table: otpTable, access: DDB_ACCESS.FULL }
+                ],
+                layers: [ddbLayer, utilityLayer, otpLayer],
             },
         ];
 

@@ -1,6 +1,7 @@
 {
     "dr-checkoff-za": {
         "corsOrigin": "*",
+        "clientUrl": "http://localhost:3000",
         "region": {
             "region": "af-south-1",
             "account": "XXXXXXXXXXXX"
@@ -9,6 +10,11 @@
             "secret": "<run 'node generateJwtSecret.js' from the project root folder>",
             "authTokenExpiration": "30m",
             "refreshTokenExpiration": "30d"
+        },
+        "mailgun": {
+            "domain": "example.com",
+            "from": "dr.checkoff@example.com",
+            "api_key": "key-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
         }
     }
 }

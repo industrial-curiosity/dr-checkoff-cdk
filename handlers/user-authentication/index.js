@@ -13,7 +13,9 @@ exports.login = async (event) => {
 
             users.getEntry(payload)
             .then(user => {
-                // TODO verify that user status is "active"
+                if (user.status != "active") {
+                    throw new Error("user status not active");
+                }
                 bcrypt.compare(payload.password, user.password, function(err, result) {
                     if (!err && result) {
                         jwt.generateTokens({ ...user, deviceId: payload.deviceId })

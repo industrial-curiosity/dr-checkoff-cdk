@@ -1,0 +1,16 @@
+{
+  "name": "otp-layer",
+  "version": "1.0.0",
+  "description": "a layer for otp logic",
+  "main": "index.js",
+  "author": "therightstuff",
+  "license": "MIT",
+  "scripts": {
+    "package-upgrade": "npx npm-check-updates -u"
+  },
+  "dependencies": {
+    "mailgun-js": "^0.22.0",
+    "twilio": "^3.48.1",
+    "uuid": "^8.3.0"
+  }
+}
