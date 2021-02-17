@@ -3,6 +3,10 @@ const otp = require('/opt/nodejs/otp-layer/otp');
 const users = require('/opt/nodejs/ddb-layer/users');
 const utils = require('/opt/nodejs/utility-layer/utils');
 
+const DOMAIN_WHITELIST = process.env.DOMAIN_WHITELIST.length > 0 ?
+    process.env.DOMAIN_WHITELIST.split(",")
+    :
+    [];
 const SALT_ROUNDS = 10;
 
 const PURPOSE_REGISTRATION = "user registration"
@@ -38,6 +42,13 @@ exports.register = async (event) => {
                 body: event.body,
                 required: [ 'email', 'password' ]
             });
+
+            if (DOMAIN_WHITELIST.length > 0) {
+                let emailDomain = payload.email.split("@")[1];
+                if (DOMAIN_WHITELIST.indexOf(emailDomain) < 0) {
+                    throw new Error("User domain not recognized.");
+                }
+            }
 
             // hash the password
             bcrypt.hash(payload.password, SALT_ROUNDS, function(err, hashedPassword) {

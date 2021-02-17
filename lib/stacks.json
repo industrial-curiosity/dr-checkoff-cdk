@@ -15,6 +15,9 @@
             "domain": "example.com",
             "from": "dr.checkoff@example.com",
             "api_key": "key-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-        }
+        },
+        "domainWhitelist": [
+            "example.com"
+        ]
     }
 }

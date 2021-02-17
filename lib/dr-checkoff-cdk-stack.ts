@@ -105,6 +105,7 @@ export class DrCheckoffCdkStack extends cdk.Stack {
             USER_LOOKUP_TABLE_NAME: userLookupTable.tableName,
             REFRESH_TOKENS_TABLE_NAME: refreshTokenTable.tableName,
             OTP_TABLE_NAME: otpTable.tableName,
+            DOMAIN_WHITELIST: customOptions.domainWhitelist.join()
         };
 
         let jwtEnvironment = {

@@ -27,20 +27,34 @@ updates.
 Configuration of your stack(s) is performed by updating `lib/stacks.json`.
 
 **WARNING**: we strongly recommend avoiding commits that include your changes
-to this file.
+to this file to avoid checking in your secrets.
+
+### Client URL
 
 The `clientUrl` assumes a Dr Checkoff client such as
 [Dr Checkoff React Client](https://github.com/industrial-curiosity/dr-checkoff-react),
 but it can be any project that provides the route `/{userId}/confirm`, see
 [Account Registration](#account-registration).
 
+### JWT
+
 The `jwt.secret` can be any string, but it's advised to run
 `node generateJwtSecret.js` and copy in the results.
+
+### Mailgun
 
 This project uses [mailgun](https://mailgun.com) to send one-time registration
 confirmation codes via email. If you are not familiar with mailgun, take a look
 at [mailgun-web-interface-js](http://htmlpreview.github.io/?https://github.com/therightstuff/mailgun-web-interface-js/blob/master/dist/index.html)
 to get started.
+
+### Domain whitelist
+
+`domainWhitelist` is an array of domains from which users can register, or an
+empty array to allow registrations from any domain. It is warmly recommended to
+keep this list as short as possible as AWS imposes a Lambda Environment
+Variable Size Quota of 4KB for ALL environment variables, even if the
+theoretical limit for an environment variable is around 32KB.
 
 ## Useful commands
 
